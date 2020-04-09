@@ -14,3 +14,10 @@ variable adminAccount  {
 variable adminPass { 
     description = "admin password"
  }
+
+ variable "int_vpc" {
+  
+}
+variable "int_subnet" {
+  
+}
