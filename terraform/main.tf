@@ -129,6 +129,8 @@ module "k8s" {
   gcpZone = "${var.gcpZone}"
   adminAccount      = "${var.adminAccount}"
   adminPass  = "${var.adminPass}"
+  int_vpc = "${google_compute_network.vpc_network_int}"
+  int_subnet = "${google_compute_subnetwork.vpc_network_int_sub}"
 }
 
 module "cis" {
