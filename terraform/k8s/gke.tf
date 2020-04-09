@@ -50,7 +50,7 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
   cluster    = google_container_cluster.primary.name
   node_count = 3
 
-  node_config = {
+  node_config {
       image_type = "COS"
       preemptible  = true
       machine_type = "n1-standard-1"
