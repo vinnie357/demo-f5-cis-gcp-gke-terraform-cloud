@@ -5,9 +5,10 @@ resource "google_container_cluster" "primary" {
   min_master_version = "1.14.10-gke.27"
   default_max_pods_per_node = "110"
   ip_allocation_policy {}
-  database_encryption {
-      state = "DECRYPTED"
-  }
+# beta db encrypt
+#   database_encryption {
+#       state = "DECRYPTED"
+#   }
 #   node_config = {
 #       image_type = "COS"
 #       preemptible  = true
@@ -55,7 +56,6 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
       machine_type = "n1-standard-1"
       disk_type = "pd-standard"
       disk_size_gb = 100
-      initial_node_count = 3
       metadata = {
           disable-legacy-endpoints = "true"
       }
