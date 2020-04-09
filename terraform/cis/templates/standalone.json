@@ -1,0 +1,40 @@
+{
+    "schemaVersion": "1.9.0",
+    "class": "Device",
+    "async": true,
+    "label": "Basic onboarding payg",
+    "Common": {
+        "class": "Tenant",
+        "hostname": "${local_host}.example.com",
+        "dbvars": {
+            "class": "DbVariables",
+            "ui.advisory.enabled": true,
+            "ui.advisory.color": "green",
+            "ui.advisory.text": "/Common/hostname"
+        },
+        "myDns": {
+            "class": "DNS",
+            "nameServers": [
+                "${dns_server}",
+                "2001:4860:4860::8844"
+            ],
+            "search": [
+                "f5.com"
+            ]
+        },
+        "myNtp": {
+            "class": "NTP",
+            "servers": [
+                "${ntp_server}",
+                "0.pool.ntp.org",
+                "1.pool.ntp.org"
+            ],
+            "timezone": "${timezone}"
+        },
+        "myProvisioning": {
+            "class": "Provision",
+            "ltm": "nominal",
+            "asm": "nominal"
+        }
+    }
+}
