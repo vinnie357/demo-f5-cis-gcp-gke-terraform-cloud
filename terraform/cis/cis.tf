@@ -65,7 +65,6 @@ data "template_file" "vm_onboard" {
     onboard_log		      = "${var.onboard_log}"
     DO1_Document        = "${data.template_file.vm01_do_json.rendered}"
     DO2_Document        = "${data.template_file.vm02_do_json.rendered}"
-    AS3_Document        = "${data.template_file.as3_json.rendered}"
     projectPrefix       = "${var.projectPrefix}"
     buildSuffix         = "${var.buildSuffix}"
   }
@@ -81,11 +80,7 @@ data "template_file" "vm01_do_json" {
     host1	    = "${var.host1_name}"
     host2	    = "${var.host2_name}"
     local_host      = "${var.host1_name}"
-    local_ext_selfip = "${var.f5vm01ext}"
-    local_int_selfip = "${var.f5vm01int}"
     remote_host	    = "${var.host2_name}"
-    remote_selfip   = "${var.f5vm02int}"
-    gateway	        = "${local.ext_gw}"
     dns_server	    = "${var.dns_server}"
     ntp_server	    = "${var.ntp_server}"
     timezone	    = "${var.timezone}"
@@ -105,11 +100,7 @@ data "template_file" "vm02_do_json" {
     host1           = "${var.host1_name}"
     host2           = "${var.host2_name}"
     local_host      = "${var.host2_name}"
-    local_ext_selfip = "${var.f5vm02ext}"
-    local_int_selfip = "${var.f5vm02int}"
     remote_host     = "${var.host1_name}"
-    remote_selfip   = "${var.f5vm01int}"
-    gateway         = "${local.ext_gw}"
     dns_server      = "${var.dns_server}"
     ntp_server      = "${var.ntp_server}"
     timezone        = "${var.timezone}"
@@ -117,19 +108,6 @@ data "template_file" "vm02_do_json" {
     admin_password  = "${var.adminPass}"
   }
 }
-# as3 uuid generation
-# resource "random_uuid" "as3_uuid" { }
-
-#application services 3 template
-data "template_file" "as3_json" {
-  template = "${file("${path.root}/cis/templates/cis.json")}"
-  vars ={
-      uuid = "${uuid()}"
-      #virtualAddressExternal ="${google_compute_forwarding_rule.default.ip_address}"
-    #   sdCreds = "${base64encode(file("/creds/gcp/${var.GCP_SA_FILE}.json"))}"
-  }
-}
-
 
 # bigips
 resource "google_compute_instance" "vm_instance" {

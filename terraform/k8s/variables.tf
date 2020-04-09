@@ -8,7 +8,7 @@ variable "gcpZone" {
 variable "buildSuffix" {
   description = "resource suffix"
 }
-variable adminAccountName  { 
+variable adminAccount  { 
     description = "admin account" 
 }
 variable adminPass { 

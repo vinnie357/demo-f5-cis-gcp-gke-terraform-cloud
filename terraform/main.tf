@@ -127,7 +127,7 @@ module "k8s" {
   projectPrefix = "${var.projectPrefix}"
   buildSuffix = "-${random_pet.buildSuffix.id}"
   gcpZone = "${var.gcpZone}"
-  adminAccountName      = "${var.adminAccountName}"
+  adminAccount      = "${var.adminAccount}"
   adminPass  = "${var.adminPass}"
 }
 

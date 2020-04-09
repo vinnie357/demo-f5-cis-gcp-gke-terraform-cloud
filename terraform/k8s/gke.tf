@@ -9,7 +9,7 @@ resource "google_container_cluster" "primary" {
   initial_node_count       = 1
 
   master_auth {
-    username = "${var.adminAccountName}"
+    username = "${var.adminAccount}"
     password = "${var.adminPass}"
 
     client_certificate_config {
