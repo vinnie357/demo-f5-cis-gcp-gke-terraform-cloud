@@ -33,7 +33,7 @@ resource "google_container_cluster" "primary" {
   remove_default_node_pool = true
   initial_node_count       = 1
   network = "${var.int_vpc.name}"
-  subnetwork = "${var.int_subnetwork.name}"
+  subnetwork = "${var.int_subnet.name}"
   master_auth {
     # username = "${var.adminAccount}"
     # password = "${var.adminPass}"
