@@ -1,7 +1,7 @@
 variable "projectPrefix" {
   description = "prefix for resources"
 }
-variable "gcpZone " {
+variable "gcpZone" {
   description = "zone where gke is deployed"
 }
 
