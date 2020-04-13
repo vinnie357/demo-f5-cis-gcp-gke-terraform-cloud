@@ -1,0 +1,27 @@
+#https://hub.docker.com/r/bkimminich/juice-shop
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: owasp-juiceshop
+  name: owasp-juiceshop
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: owasp-juiceshop
+  template:
+    metadata:
+      labels:
+        app: owasp-juiceshop
+    spec:
+      containers:
+      - env:
+        - name: service_name
+          value: owasp-juiceshop
+        image: bkimminich/juice-shop:latest
+        imagePullPolicy: Always
+        name: owasp-juiceshop
+        ports:
+        - containerPort: 3000
+          protocol: TCP

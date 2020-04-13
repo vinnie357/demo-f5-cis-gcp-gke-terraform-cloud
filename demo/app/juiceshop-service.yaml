@@ -1,0 +1,19 @@
+#https://clouddocs.f5.com/containers/v2/kubernetes/kctlr-k8s-as3.html
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: owasp-juiceshop
+    cis.f5.com/as3-tenant: AS3
+    cis.f5.com/as3-app: owasp-juiceshop
+    cis.f5.com/as3-pool: juiceshop_pool
+  name: owasp-juiceshop
+spec:
+  ports:
+  - name: owasp-juiceshop
+    port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: owasp-juiceshop
+  type: NodePort

@@ -1,8 +1,12 @@
+#https://clouddocs.f5.com/containers/v2/kubernetes/kctlr-k8s-as3.html
 apiVersion: v1
 kind: Service
 metadata:
   labels:
     app: f5-hello-world
+    cis.f5.com/as3-tenant: AS3
+    cis.f5.com/as3-app: f5-hello-world
+    cis.f5.com/as3-pool: web_pool
   name: f5-hello-world
 spec:
   ports:

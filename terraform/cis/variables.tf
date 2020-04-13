@@ -33,7 +33,7 @@ variable "buildSuffix" {
 }
 variable "name" {
   description = "device name"
-  default = "apm"
+  default = "cis"
 }
 # Custom image
 variable "customImage" {
