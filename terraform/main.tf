@@ -117,7 +117,23 @@ resource "google_compute_firewall" "default-allow-internal-int" {
 
   source_ranges = ["10.0.20.0/24"]
 }
+resource "google_compute_firewall" "allow-internal-egress" {
+  name    = "${var.projectPrefix}allow-internal-egress-${random_pet.buildSuffix.id}"
+  network = "${google_compute_network.vpc_network_int.name}"
+  direction = "EGRESS"
+  enable_logging = true
+  allow {
+    protocol = "icmp"
+  }
 
+  allow {
+    protocol = "tcp"
+    ports    = ["443"]
+  }
+  priority = "65533"
+
+  destination_ranges = ["10.0.20.0/24"]
+}
 
 module "k8s" {
   source   = "./k8s"
