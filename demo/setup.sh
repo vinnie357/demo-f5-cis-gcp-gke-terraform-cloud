@@ -11,11 +11,13 @@ read -s BIGIP_PASS
 # gcloud compute instances list --filter name:cis-demo-cis --format json | jq .[0] | jq .networkInterfaces | jq .[2].networkIP
 # gcloud compute instances list --filter name:cis-demo-cis --format json | jq .[0] | jq .networkInterfaces | jq .[0].networkIP
 # gcloud compute instances list --filter name:cis-demo-cis --format json | jq .[0] | jq .networkInterfaces | jq .[0].accessConfigs[0].natIP
+echo "get big-ip info"
 bigip1ExternalSelfIp=$(gcloud compute instances list --filter name:cis-demo-cis --format json | jq .[0] | jq .networkInterfaces | jq -r .[0].networkIP)
 bigip1ExternalNatIp=$(gcloud compute instances list --filter name:cis-demo-cis --format json | jq .[0] | jq .networkInterfaces | jq -r .[0].accessConfigs[0].natIP)
 bigip1MgmtIp=$(gcloud compute instances list --filter name:cis-demo-cis --format json | jq .[0] | jq .networkInterfaces | jq -r .[1].accessConfigs[0].natIP)
 ##
 # gke
+echo "get GKE cluster info"
 # cluster name
 #gcloud container clusters list --filter name:cis-demo-gke --format json | jq .[].name
 clusterName=$(gcloud container clusters list --filter name:cis-demo-gke --format json | jq -r .[].name)
@@ -30,12 +32,14 @@ zone=$(gcloud container clusters list --filter name:cis-demo-gke --format json |
 clusterNodes=$(gcloud compute instances list --filter name:cis-demo-gke-clu --format json | jq -r .[].networkInterfaces[].accessConfigs[0].natIP)
 
 # cluster creds
+echo "get GKE cluster creds"
 gcloud container clusters \
     get-credentials  $clusterName	 \
     --zone $zone
 
 
 ## deploy services
+echo "deploy demo apps"
 kubectl apply -f app/juiceshop-deployment.yaml
 kubectl apply -f app/juiceshop-service.yaml
 
@@ -87,6 +91,7 @@ echo "check app at http://$bigip1ExternalNatIp"
 echo "type yes to tail the cis logs"
 read answer
 if [ $answer == "yes" ]; then
+    cisPod=$(kubectl get pods --field-selector=status.phase=Running -n kube-system -o json | jq -r ".items[].metadata | select(.name | contains (\"k8s-bigip-ctlr\")).name")
     kubectl logs -f $cisPod -n kube-system | grep --color=auto -i '\[as3'
 else
     echo "Finished"
