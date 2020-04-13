@@ -73,3 +73,15 @@ Deploy F5 container ingress(CIS) with Google Kubernetes Engine (GKE) as the back
 
             example: "my-key-value-text-string"
 6. queue a run of the project
+
+7. Connect to google cloud shell
+
+        https://ssh.cloud.google.com/
+
+8. clone repo
+
+    ```bash
+    git clone https://github.com/vinnie357/demo-f5-cis-gcp-gke-terraform-cloud.git
+    cd demo-f5-cis-gcp-gke-terraform-cloud/demo
+    . setup.sh
+    ```

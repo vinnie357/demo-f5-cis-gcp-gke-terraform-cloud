@@ -96,3 +96,6 @@ if [ $answer == "yes" ]; then
 else
     echo "Finished"
 fi
+
+# 
+#kubectl get nodes -o json | jq ".items[].metadata.labels | select(.node-role.kubernetes.io/master)"

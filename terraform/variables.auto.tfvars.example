@@ -1,5 +1,5 @@
 # project prefix/tag for all object names
-projectPrefix = "user-build-cis-"
+projectPrefix = "cis-demo-"
 # service account credentials
 serviceAccountFile = "/mygcpcreds.json"
 # gcp project id
