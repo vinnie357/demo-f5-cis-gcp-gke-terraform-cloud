@@ -122,9 +122,6 @@ resource "google_compute_firewall" "allow-internal-egress" {
   network = "${google_compute_network.vpc_network_int.name}"
   direction = "EGRESS"
   enable_logging = true
-  allow {
-    protocol = "icmp"
-  }
 
   allow {
     protocol = "tcp"
@@ -138,9 +135,6 @@ resource "google_compute_firewall" "allow-internal-cis" {
   name    = "${var.projectPrefix}allow-internal-cis-${random_pet.buildSuffix.id}"
   network = "${google_compute_network.vpc_network_int.name}"
   enable_logging = true
-  allow {
-    protocol = "icmp"
-  }
 
   allow {
     protocol = "tcp"

@@ -5,9 +5,9 @@ resource "google_container_cluster" "primary" {
   min_master_version = "1.14.10-gke.27"
   default_max_pods_per_node = "110"
   ip_allocation_policy {}
-  network_policy {
-      enabled = true
-  }
+#   network_policy {
+#       enabled = true
+#   }
 # beta db encrypt
 #   database_encryption {
 #       state = "DECRYPTED"
