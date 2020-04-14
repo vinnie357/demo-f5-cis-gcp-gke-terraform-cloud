@@ -7,6 +7,8 @@ clusterName=$(gcloud container clusters list --filter name:cis-demo-gke --format
 # zone
 #gcloud container clusters list --filter name:cis-demo-gke --format json | jq .[].zone
 zone=$(gcloud container clusters list --filter name:cis-demo-gke --format json | jq -r .[].zone)
+# project
+project=$(gcloud info --format json | jq -r .config.project)
 # cluster creds
 gcloud container clusters \
     get-credentials  $clusterName	 \
