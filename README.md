@@ -72,6 +72,11 @@ Deploy F5 container ingress(CIS) with Google Kubernetes Engine (GKE) as the back
         - string of license key if your using byol
 
             example: "my-key-value-text-string"
+    - instanceCount
+        - number of BIG-IP instances default is 1 max is 2 currently
+
+            example: "2"
+
 6. queue a run of the project
 
 7. Connect to google cloud shell
@@ -85,3 +90,10 @@ Deploy F5 container ingress(CIS) with Google Kubernetes Engine (GKE) as the back
     cd demo-f5-cis-gcp-gke-terraform-cloud/demo
     . setup.sh
     ```
+
+# Optional
+
+1. AS3 to support Google Loadbalancers
+
+    cd demo/as3
+    . as3_config.sh

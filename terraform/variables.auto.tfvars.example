@@ -20,3 +20,5 @@ gceSshPubKeyFile = "/id_rsa.pub"
 customImage = "projects/my-project-id/global/images/f5-bigip-15-1-0-0-0-31-byol-all-1slot-fxaschncp"
 # license key when using a custom image or byol
 bigipLicense1 = "my-key-value-text-string"
+# number of BIG-IP instances default is 1 max is 2 currently
+instanceCount = 1
