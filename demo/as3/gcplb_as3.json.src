@@ -1,0 +1,74 @@
+{
+    "$schema": "https://raw.githubusercontent.com/F5Networks/f5-appsvcs-extension/master/schema/latest/as3-schema.json",
+    "class":"AS3",
+    "action":"deploy",
+    "persist":true,
+    "declaration": { 
+        "class": "ADC",
+        "schemaVersion": "3.12.0",
+        "id": "209850845011211",
+        "label": "gcp baseline",
+        "remark": "gcp baseline 3.12.0",
+        "Common": {
+            "class": "Tenant",
+            "Shared": {
+                "class": "Application",
+                "template": "shared",
+                "example_response": {
+                    "class": "iRule",
+                    "iRule": "when HTTP_REQUEST {\n    HTTP::respond 200 content {\n        <html>\n        <head>\n        <title>Health Check</title>\n        </head>\n        <body>\n        System is online.\n        </body>\n        </html>\n        }\n}"
+                },
+                "certificate_default": {
+                    "class": "Certificate",
+                    "certificate": {
+                        "bigip": "/Common/default.crt"
+                    },
+                    "privateKey": {
+                        "bigip": "/Common/default.key"
+                    }
+                },
+                "baselineClientSSL": {
+                    "certificates": [
+                        {
+                            "certificate": "certificate_default"
+                        }
+                    ],
+                    "ciphers": "HIGH",
+                    "class": "TLS_Server"
+                },
+                "gcp_response": {
+                    "class": "iRule",
+                    "iRule": "when CLIENT_ACCEPTED {  set virtualSsl \"/AS3/owasp-juiceshop/serviceMain\"\n set virtualHttp \"/AS3/owasp-juiceshop/serviceMain-Redirect-\"\n \n switch [TCP::local_port] {\n 443 { \n virtual $virtualSsl \n }\n 80 {\n virtual $virtualHttp \n }\n default { \n virtual $virtualSsl \n }\n }\n }"
+                },
+                "gcp_local": {
+                    "layer4": "tcp",
+                    "iRules": [
+                        "gcp_response"
+                    ],
+                    "securityLogProfiles": [
+                        {
+                            "bigip": "/Common/Log all requests"
+                        },
+                        {
+                            "bigip": "/Common/local-dos"
+                        }
+                    ],
+                    "translateServerAddress": true,
+                    "translateServerPort": true,
+                    "class": "Service_TCP",
+                    "profileDOS": {
+                        "bigip": "/Common/dos"
+                    },
+                    "profileTCP": {
+                        "bigip": "/Common/f5-tcp-progressive"
+                    },
+                    "virtualAddresses": [
+                        "-external-self-"
+                    ],
+                    "virtualPort": 0,
+                    "snat": "none"
+                }
+            }
+        }
+    }
+}

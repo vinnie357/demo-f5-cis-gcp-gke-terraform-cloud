@@ -5,7 +5,7 @@ echo -n "Enter your bigip username and press [ENTER]: "
 read BIGIP_ADMIN
 echo -n "Enter your bigip password and press [ENTER]: "
 read -s BIGIP_PASS
-
+echo ""
 # gcloud compute instances list --filter name:cis-demo-cis --format json | jq keys
 # gcloud compute instances list --filter name:cis-demo-cis --format json | jq .[0].name
 # gcloud compute instances list --filter name:cis-demo-cis --format json | jq .[0] | jq .networkInterfaces | jq .[2].networkIP
