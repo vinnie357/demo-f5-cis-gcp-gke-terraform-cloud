@@ -1,3 +1,4 @@
+#https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/8.1.0?tab=inputs
 resource "google_container_cluster" "primary" {
   name     = "${var.projectPrefix}gke-cluster${var.buildSuffix}"
   location = "${var.gcpZone}"
