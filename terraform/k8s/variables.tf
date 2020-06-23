@@ -1,11 +1,11 @@
-variable "projectPrefix" {
+variable projectPrefix {
   description = "prefix for resources"
 }
-variable "gcpZone" {
+variable gcpZone {
   description = "zone where gke is deployed"
 }
 
-variable "buildSuffix" {
+variable buildSuffix {
   description = "resource suffix"
 }
 variable adminAccount  { 
@@ -15,9 +15,9 @@ variable adminPass {
     description = "admin password"
  }
 
- variable "int_vpc" {
+ variable int_vpc {
   
 }
-variable "int_subnet" {
+variable int_subnet {
   
 }

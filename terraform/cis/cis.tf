@@ -1,15 +1,15 @@
 
 # Obtain Gateway IP for each Subnet
 locals {
-  depends_on = ["google_compute_network.vpc_network_mgmt", "google_compute_network.vpc_network_mgmt_ext","google_compute_network.vpc_network_mgmt_int"]
-  mgmt_gw    = "${var.mgmt_subnet.gateway_address}"
-  ext_gw     = "${var.ext_subnet.gateway_address}"
-  int_gw     = "${var.int_subnet.gateway_address}"
+  depends_on = [google_compute_network.vpc_network_mgmt, google_compute_network.vpc_network_mgmt_ext,google_compute_network.vpc_network_mgmt_int]
+  mgmt_gw    = var.mgmt_subnet.gateway_address
+  ext_gw     = var.ext_subnet.gateway_address
+  int_gw     = var.int_subnet.gateway_address
 }
 # cis
-resource "google_compute_firewall" "mgmt" {
+resource google_compute_firewall mgmt {
   name    = "${var.projectPrefix}mgmt-cis${var.buildSuffix}"
-  network = "${var.mgmt_vpc.name}"
+  network = var.mgmt_vpc.name
 
   allow {
     protocol = "icmp"
@@ -20,11 +20,11 @@ resource "google_compute_firewall" "mgmt" {
     ports    = [ "22", "443"]
   }
 
-  source_ranges = ["${var.adminSrcAddr}"]
+  source_ranges = [var.adminSrcAddr]
 }
-resource "google_compute_firewall" "app" {
+resource google_compute_firewall app {
   name    = "${var.projectPrefix}app-cis${var.buildSuffix}"
-  network = "${var.ext_vpc.name}"
+  network = var.ext_vpc.name
 
   allow {
     protocol = "icmp"
@@ -41,15 +41,15 @@ resource "google_compute_firewall" "app" {
   }
 
 
-  source_ranges = ["${var.adminSrcAddr}"]
+  source_ranges = [var.adminSrcAddr]
 }
 # Setup Onboarding scripts
-data "template_file" "vm_onboard" {
+data template_file vm_onboard {
   template = "${file("${path.root}/cis/templates/onboard_baseline.tpl")}"
 
   vars = {
-    uname        	      = "${var.adminAccountName}"
-    upassword        	  = "${var.adminPass}"
+    uname        	      = var.adminAccountName
+    upassword        	  = var.adminPass
     doVersion             = "latest"
     #example version:
     #as3Version            = "3.16.0"
@@ -61,60 +61,60 @@ data "template_file" "vm_onboard" {
     as3ExternalDeclarationUrl = "https://example.domain.com/as3.json"
     tsExternalDeclarationUrl = "https://example.domain.com/ts.json"
     cfExternalDeclarationUrl = "https://example.domain.com/cf.json"
-    libs_dir		        = "${var.libs_dir}"
-    onboard_log		      = "${var.onboard_log}"
-    DO1_Document        = "${data.template_file.vm01_do_json.rendered}"
-    DO2_Document        = "${data.template_file.vm02_do_json.rendered}"
-    projectPrefix       = "${var.projectPrefix}"
-    buildSuffix         = "${var.buildSuffix}"
+    libs_dir		        = var.libs_dir
+    onboard_log		      = var.onboard_log
+    DO1_Document        = data.template_file.vm01_do_json.rendered
+    DO2_Document        = data.template_file.vm02_do_json.rendered
+    projectPrefix       = var.projectPrefix
+    buildSuffix         = var.buildSuffix
   }
 }
 #Declarative Onboarding template 01
-data "template_file" "vm01_do_json" {
+data template_file vm01_do_json {
   template = "${file("${path.root}/cis/templates/${var.vm_count >= 2 ? "cluster" : "${var.bigipLicense1 != "" ? "standalone_byol" : "standalone"}"}.json")}"
 
   vars = {
     #Uncomment the following line for BYOL
     #local_sku	    = "${var.license1}"
 
-    host1	    = "${var.host1_name}"
-    host2	    = "${var.host2_name}"
-    local_host      = "${var.host1_name}"
-    remote_host	    = "${var.host2_name}"
-    dns_server	    = "${var.dns_server}"
-    ntp_server	    = "${var.ntp_server}"
-    timezone	    = "${var.timezone}"
-    admin_user      = "${var.adminAccountName}"
-    admin_password  = "${var.adminPass}"
-    bigipLicense1  = "${var.bigipLicense1}"
+    host1	    = var.host1_name
+    host2	    = var.host2_name
+    local_host      = var.host1_name
+    remote_host	    = var.host2_name
+    dns_server	    = var.dns_server
+    ntp_server	    = var.ntp_server
+    timezone	    = var.timezone
+    admin_user      = var.adminAccountName
+    admin_password  = var.adminPass
+    bigipLicense1  = var.bigipLicense1
   }
 }
 #Declarative Onboarding template 02
-data "template_file" "vm02_do_json" {
+data template_file vm02_do_json {
   template = "${file("${path.root}/cis/templates/${var.vm_count >= 2 ? "cluster" : "standalone"}.json")}"
 
   vars = {
     #Uncomment the following line for BYOL
     #local_sku      = "${var.license2}"
 
-    host1           = "${var.host1_name}"
-    host2           = "${var.host2_name}"
-    local_host      = "${var.host2_name}"
-    remote_host     = "${var.host1_name}"
-    dns_server      = "${var.dns_server}"
-    ntp_server      = "${var.ntp_server}"
-    timezone        = "${var.timezone}"
-    admin_user      = "${var.adminAccountName}"
-    admin_password  = "${var.adminPass}"
+    host1           = var.host1_name
+    host2           = var.host2_name
+    local_host      = var.host2_name
+    remote_host     = var.host1_name
+    dns_server      = var.dns_server
+    ntp_server      = var.ntp_server
+    timezone        = var.timezone
+    admin_user      = var.adminAccountName
+    admin_password  = var.adminPass
   }
 }
 
 # bigips
-resource "google_compute_instance" "vm_instance" {
-  count            = "${var.vm_count}"
+resource google_compute_instance vm_instance {
+  count            = var.vm_count
   name             = "${var.projectPrefix}${var.name}-${count.index + 1}-instance${var.buildSuffix}"
-  machine_type = "${var.bigipMachineType}"
-  tags = ["allow-health-checks"]
+  machine_type = var.bigipMachineType
+  tags = [allow-health-checks]
   boot_disk {
     initialize_params {
       image = "${var.customImage != "" ? "${var.customImage}" : "${var.bigipImage}"}"
@@ -129,13 +129,13 @@ resource "google_compute_instance" "vm_instance" {
     deviceId = "${count.index + 1}"
  }
  # this is best for dev, as it runs ANY time there are changes and DESTROYS the instances
-  metadata_startup_script = "${data.template_file.vm_onboard.rendered}"
+  metadata_startup_script = data.template_file.vm_onboard.rendered
 
   network_interface {
     # external
     # A default network is created for all GCP projects
-    network       = "${var.ext_vpc.name}"
-    subnetwork = "${var.ext_subnet.name}"
+    network       = var.ext_vpc.name
+    subnetwork = var.ext_subnet.name
     # network = "${google_compute_network.vpc_network.self_link}"
     access_config {
     }
@@ -143,8 +143,8 @@ resource "google_compute_instance" "vm_instance" {
   network_interface {
     # mgmt
     # A default network is created for all GCP projects
-    network       = "${var.mgmt_vpc.name}"
-    subnetwork = "${var.mgmt_subnet.name}"
+    network       = var.mgmt_vpc.name
+    subnetwork = var.mgmt_subnet.name
     # network = "${google_compute_network.vpc_network.self_link}"
     access_config {
     }
@@ -152,8 +152,8 @@ resource "google_compute_instance" "vm_instance" {
     network_interface {
     # internal
     # A default network is created for all GCP projects
-    network       = "${var.int_vpc.name}"
-    subnetwork = "${var.int_subnet.name}"
+    network       = var.int_vpc.name
+    subnetwork = var.int_subnet.name
     # network = "${google_compute_network.vpc_network.self_link}"
     # access_config {
     # }
@@ -200,7 +200,7 @@ resource "google_compute_instance" "vm_instance" {
 #     not_found_page   = "404.html"
 #   }
 # }
-resource "google_storage_bucket" "bigip-ha" {
+resource google_storage_bucket bigip-ha {
   name     = "${var.projectPrefix}bigip-storage${var.buildSuffix}"
   location = "US"
 
@@ -210,18 +210,18 @@ resource "google_storage_bucket" "bigip-ha" {
   }
 }
 
-resource "google_storage_bucket_object" "bigip-1" {
+resource google_storage_bucket_object bigip-1 {
 name = "bigip-1"
-content = "${google_compute_instance.vm_instance.0.network_interface.2.network_ip}"
-bucket = "${google_storage_bucket.bigip-ha.name}"
+content = google_compute_instance.vm_instance.0.network_interface.2.network_ip
+bucket = google_storage_bucket.bigip-ha.name
 }
-resource "google_storage_bucket_object" "bigip-2" {
+resource google_storage_bucket_object bigip-2 {
 name = "bigip-2"
 content = "${var.vm_count >= 2 ? "${google_compute_instance.vm_instance.1.network_interface.2.network_ip}" : "none" }"
-bucket = "${google_storage_bucket.bigip-ha.name}"
+bucket = google_storage_bucket.bigip-ha.name
 }
 
-resource "null_resource" "wait" {
+resource null_resource wait {
    #https://ilhicas.com/2019/08/17/Terraform-local-exec-run-always.html
    triggers = {
     always_run = "${timestamp()}"

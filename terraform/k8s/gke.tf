@@ -1,7 +1,7 @@
 #https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/8.1.0?tab=inputs
-resource "google_container_cluster" "primary" {
+resource google_container_cluster primary {
   name     = "${var.projectPrefix}gke-cluster${var.buildSuffix}"
-  location = "${var.gcpZone}"
+  location = var.gcpZone
   node_version = "1.14.10-gke.27"
   min_master_version = "1.14.10-gke.27"
   default_max_pods_per_node = "110"
@@ -37,8 +37,8 @@ resource "google_container_cluster" "primary" {
   # node pool and immediately delete it.
   remove_default_node_pool = true
   initial_node_count       = 1
-  network = "${var.int_vpc.name}"
-  subnetwork = "${var.int_subnet.name}"
+  network = var.int_vpc.name
+  subnetwork = var.int_subnet.name
   master_auth {
     # username = "${var.adminAccount}"
     # password = "${var.adminPass}"
@@ -48,9 +48,9 @@ resource "google_container_cluster" "primary" {
   }
 }
 
-resource "google_container_node_pool" "primary_preemptible_nodes" {
+resource google_container_node_pool primary_preemptible_nodes {
   name       = "${var.projectPrefix}node-pool${var.buildSuffix}"
-  location   = "${var.gcpZone}"
+  location   = var.gcpZone
   cluster    = google_container_cluster.primary.name
   node_count = 3
 

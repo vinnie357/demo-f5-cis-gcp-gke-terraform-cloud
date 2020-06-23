@@ -1,58 +1,58 @@
 #project
-variable "projectPrefix" {
+variable projectPrefix {
     description = "prefix for resources"
 }
-variable "gcpProjectId" {
+variable gcpProjectId {
   description = "project where resources are created"
 }
 # env
-variable "gcpRegion" {
+variable gcpRegion {
   description = "default region"
 }
-variable "gcpZone" {
+variable gcpZone {
   description = "default zone"
 }
-variable "gcpServiceAccounts" {
-  type = "map"
+variable gcpServiceAccounts {
+  type = map
   default = {
       storage = "default-compute@developer.gserviceaccount.com"
       compute = "default-compute@developer.gserviceaccount.com"
     }
 }
 # admin 
-variable "adminSrcAddr" {
+variable adminSrcAddr {
   description = "admin source range in CIDR x.x.x.x/24"
 }
 
-variable "adminAccount" {
+variable adminAccount {
   description = "admin account name"
 }
-variable "adminPass" {
+variable adminPass {
   description = "admin account password"
 }
-variable "gceSshPubKeyFile" {
+variable gceSshPubKeyFile {
   description = "ssh public key for instances"
 }
 
-variable "serviceAccountFile" {
+variable serviceAccountFile {
   description = "cloud service account json"
 }
 
 # cis
-variable "instanceCount" {
+variable instanceCount {
   description = "number of instances"
   default = 1
 }
-variable "appName" {
+variable appName {
   description = "app name"
   default = "cis"
 }
 # Custom image
-variable "customImage" {
+variable customImage {
   description = "custom build image name"
   default = ""
 }
-variable "bigipLicense1" {
+variable bigipLicense1 {
   description = " bigip license for BYOL"
   default = ""
 }
