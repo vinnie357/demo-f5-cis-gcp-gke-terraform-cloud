@@ -1,6 +1,7 @@
 #project
 variable projectPrefix {
     description = "prefix for resources"
+    default = "cis-demo-"
 }
 variable gcpProjectId {
   description = "project where resources are created"
