@@ -138,7 +138,13 @@ resource google_compute_firewall allow-internal-cis {
 
   source_ranges = ["10.0.20.0/24"]
 }
-
+# secret
+resource "random_password" "password" {
+  length           = 16
+  special          = true
+  override_special = " %*+,-./:=?@[]_~"
+}
+# k8s
 module k8s {
   source   = "./k8s"
   #====================#
@@ -148,11 +154,11 @@ module k8s {
   buildSuffix = "-${random_pet.buildSuffix.id}"
   gcpZone = var.gcpZone
   adminAccount      = var.adminAccountName
-  adminPass  = var.adminPass
+  adminPass  = random_password.password.result
   int_vpc = google_compute_network.vpc_network_int
   int_subnet = google_compute_subnetwork.vpc_network_int_sub
 }
-
+# cis
 module cis {
   source   = "./cis"
   #====================#
@@ -160,7 +166,7 @@ module cis {
   #====================#
   gce_ssh_pub_key_file = var.gceSshPubKey
   adminSrcAddr = var.adminSrcAddr
-  adminPass = var.adminPass
+  adminPass = random_password.password.result
   adminAccountName = var.adminAccountName
   mgmt_vpc = google_compute_network.vpc_network_mgmt
   int_vpc = google_compute_network.vpc_network_int

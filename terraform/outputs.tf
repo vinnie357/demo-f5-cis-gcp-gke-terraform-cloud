@@ -5,3 +5,6 @@ output appAddress {
   value = module.cis.appAddress
 }
 
+output adminPass {
+    value = random_password.password.result
+}
