@@ -21,3 +21,7 @@ variable adminPass {
 variable int_subnet {
   
 }
+
+variable gkeVersion {
+    default = "1.16.9-gke.6"
+}

@@ -2,8 +2,8 @@
 resource google_container_cluster primary {
   name     = "${var.projectPrefix}gke-cluster${var.buildSuffix}"
   location = var.gcpZone
-  node_version = "1.14.10-gke.27"
-  min_master_version = "1.14.10-gke.27"
+  node_version = var.gkeVersion
+  min_master_version = var.gkeVersion
   default_max_pods_per_node = "110"
   ip_allocation_policy {}
 #   network_policy {
