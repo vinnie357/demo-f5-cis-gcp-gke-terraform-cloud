@@ -8,9 +8,11 @@ variable gcpProjectId {
 # env
 variable gcpRegion {
   description = "default region"
+  default = "us-east1"
 }
 variable gcpZone {
   description = "default zone"
+  default = "us-east1-b"
 }
 variable gcpServiceAccounts {
   type = map
@@ -32,10 +34,6 @@ variable adminPass {
 }
 variable gceSshPubKeyFile {
   description = "ssh public key for instances"
-}
-
-variable serviceAccountFile {
-  description = "cloud service account json"
 }
 
 # cis

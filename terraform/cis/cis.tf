@@ -1,11 +1,3 @@
-
-# Obtain Gateway IP for each Subnet
-locals {
-  depends_on = [google_compute_network.vpc_network_mgmt, google_compute_network.vpc_network_mgmt_ext,google_compute_network.vpc_network_mgmt_int]
-  mgmt_gw    = var.mgmt_subnet.gateway_address
-  ext_gw     = var.ext_subnet.gateway_address
-  int_gw     = var.int_subnet.gateway_address
-}
 # cis
 resource google_compute_firewall mgmt {
   name    = "${var.projectPrefix}mgmt-cis${var.buildSuffix}"
@@ -114,7 +106,7 @@ resource google_compute_instance vm_instance {
   count            = var.vm_count
   name             = "${var.projectPrefix}${var.name}-${count.index + 1}-instance${var.buildSuffix}"
   machine_type = var.bigipMachineType
-  tags = [allow-health-checks]
+  tags = ["allow-health-checks"]
   boot_disk {
     initialize_params {
       image = "${var.customImage != "" ? "${var.customImage}" : "${var.bigipImage}"}"
