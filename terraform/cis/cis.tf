@@ -12,7 +12,7 @@ resource google_compute_firewall mgmt {
     ports    = [ "22", "443"]
   }
 
-  source_ranges = [var.adminSrcAddr]
+  source_ranges = var.adminSrcAddr
 }
 resource google_compute_firewall app {
   name    = "${var.projectPrefix}app-cis${var.buildSuffix}"
@@ -33,7 +33,7 @@ resource google_compute_firewall app {
   }
 
 
-  source_ranges = [var.adminSrcAddr]
+  source_ranges = var.adminSrcAddr
 }
 # Setup Onboarding scripts
 data template_file vm_onboard {
@@ -109,7 +109,7 @@ resource google_compute_instance vm_instance {
   tags = ["allow-health-checks"]
   boot_disk {
     initialize_params {
-      image = "${var.customImage != "" ? "${var.customImage}" : "${var.bigipImage}"}"
+      image = "${var.customImage != "" ? var.customImage : var.bigipImage}"
       size = "128"
     }
   }
