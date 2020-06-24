@@ -209,7 +209,7 @@ bucket = google_storage_bucket.bigip-ha.name
 }
 resource google_storage_bucket_object bigip-2 {
 name = "bigip-2"
-content = "${var.vm_count >= 2 ? "${google_compute_instance.vm_instance.1.network_interface.2.network_ip}" : "none" }"
+content = var.vm_count >= 2 ? google_compute_instance.vm_instance.1.network_interface.2.network_ip : "none"
 bucket = google_storage_bucket.bigip-ha.name
 }
 
