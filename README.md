@@ -24,11 +24,6 @@ Deploy F5 container ingress(CIS) with Google Kubernetes Engine (GKE) as the back
         
             example: "mydeployment-"
 
-    - serviceAccountFile
-        - your json service account [ sensitive]
-            
-            example: ""
-
     - gcpProjectId
         - the project ID you want to deploy in
             
@@ -46,19 +41,19 @@ Deploy F5 container ingress(CIS) with Google Kubernetes Engine (GKE) as the back
     - adminSrcAddr
         - ip/mask in cidr formatt for admin access
             
-            example: "myexternalip/32"
+            example: ["myexternalip/32"]
 
-    - adminAccount
+    - adminAccountName
         - admin account name ( not admin)
 
                 example: "myuser"
             
     - adminPass [ sensitive]
-        - your temp password
+        - your temp password if desired, otherwise it will be generated
             
             example: "MysuperPass"
             
-    - gceSshPubKeyFile [ sensitive]
+    - gceSshPubKey [ sensitive]
         - contents of the admin ssh public key file
             
             example: ""

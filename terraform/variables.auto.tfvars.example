@@ -1,7 +1,5 @@
 # project prefix/tag for all object names
 projectPrefix = "cis-demo-"
-# service account credentials
-serviceAccountFile = "/mygcpcreds.json"
 # gcp project id
 gcpProjectId = "my-project-id"
 # gcp region where you want the objects
@@ -9,9 +7,9 @@ gcpRegion = "us-east1"
 # zone where you want the objects
 gcpZone = "us-east1-b"
 # admin source address https://www.ipchicken.com/ with cidr mask ip/32
-adminSrcAddr = "myexternalip/32"
+adminSrcAddr = ["myexternalip/32"]
 # admin account name
-adminAccount = "admin"
+adminAccountName = "admin"
 # admin password 
 adminPass = "admin"
 # ssh public key for instance access
