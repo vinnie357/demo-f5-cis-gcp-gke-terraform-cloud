@@ -3,8 +3,9 @@
 # bigip
 echo -n "Enter your bigip username and press [ENTER]: "
 read BIGIP_ADMIN
-echo -n "Enter your bigip password and press [ENTER]: "
-read -s BIGIP_PASS
+# echo -n "Enter your bigip password and press [ENTER]: "
+# read -s BIGIP_PASS
+BIGIP_PASS=$( cd ../terraform/ && terraform output adminPass)
 echo ""
 # gcloud compute instances list --filter name:cis-demo-cis --format json | jq keys
 # gcloud compute instances list --filter name:cis-demo-cis --format json | jq .[0].name
