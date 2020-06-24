@@ -158,10 +158,10 @@ module cis {
   #====================#
   # cis settings       #
   #====================#
-  gce_ssh_pub_key_file = var.gceSshPubKeyFile
+  gce_ssh_pub_key_file = var.gceSshPubKey
   adminSrcAddr = var.adminSrcAddr
   adminPass = var.adminPass
-  adminAccountName = var.adminAccount
+  adminAccountName = var.adminAccountName
   mgmt_vpc = google_compute_network.vpc_network_mgmt
   int_vpc = google_compute_network.vpc_network_int
   ext_vpc = google_compute_network.vpc_network_ext
