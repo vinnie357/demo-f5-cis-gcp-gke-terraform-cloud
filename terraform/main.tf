@@ -154,7 +154,7 @@ module k8s {
   buildSuffix = "-${random_pet.buildSuffix.id}"
   gcpZone = var.gcpZone
   adminAccount      = var.adminAccountName
-  adminPass  = random_password.password.result
+  adminPass  = var.adminPass != "" ? var.adminPass : random_password.password.result
   int_vpc = google_compute_network.vpc_network_int
   int_subnet = google_compute_subnetwork.vpc_network_int_sub
 }
