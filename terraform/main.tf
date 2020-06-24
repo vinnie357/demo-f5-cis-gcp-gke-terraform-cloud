@@ -147,7 +147,7 @@ module k8s {
   projectPrefix = var.projectPrefix
   buildSuffix = "-${random_pet.buildSuffix.id}"
   gcpZone = var.gcpZone
-  adminAccount      = var.adminAccount
+  adminAccount      = var.adminAccountName
   adminPass  = var.adminPass
   int_vpc = google_compute_network.vpc_network_int
   int_subnet = google_compute_subnetwork.vpc_network_int_sub
