@@ -8,3 +8,7 @@ output appAddress {
 output adminPass {
     value = random_password.password.result
 }
+
+output adminAccountName {
+    value = var.adminAccountName
+}

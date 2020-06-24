@@ -1,8 +1,9 @@
 #!/bin/bash
 # expects sed/gcloud/jq best run in google cloud shell
 # bigip
-echo -n "Enter your bigip username and press [ENTER]: "
-read BIGIP_ADMIN
+# echo -n "Enter your bigip username and press [ENTER]: "
+# read BIGIP_ADMIN
+BIGIP_ADMIN=$( cd ../terraform/ && terraform output adminAccountName)
 # echo -n "Enter your bigip password and press [ENTER]: "
 # read -s BIGIP_PASS
 BIGIP_PASS=$( cd ../terraform/ && terraform output adminPass)
