@@ -166,7 +166,7 @@ module cis {
   #====================#
   gce_ssh_pub_key_file = var.gceSshPubKey
   adminSrcAddr = var.adminSrcAddr
-  adminPass = random_password.password.result
+  adminPass = var.adminPass != "" ? var.adminPass : random_password.password.result
   adminAccountName = var.adminAccountName
   mgmt_vpc = google_compute_network.vpc_network_mgmt
   int_vpc = google_compute_network.vpc_network_int

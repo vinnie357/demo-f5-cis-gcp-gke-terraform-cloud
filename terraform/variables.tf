@@ -31,6 +31,7 @@ variable adminAccountName {
 }
 variable adminPass {
   description = "admin account password"
+  default = ""
 }
 variable gceSshPubKey {
   description = "ssh public key for instances"
