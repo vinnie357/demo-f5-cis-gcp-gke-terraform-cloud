@@ -89,6 +89,34 @@ Deploy F5 container ingress(CIS) with Google Kubernetes Engine (GKE) as the back
 # Optional
 
 1. AS3 to support Google Loadbalancers
+    ```bash
+        cd demo/as3
+        . as3_config.sh
+    ```
+2. Run all as a script from google cloud shell
 
-    cd demo/as3
-    . as3_config.sh
+    ```bash
+    repo="demo-f5-cis-gcp-gke-terraform-cloud"
+    cd ~
+    rm -rf $repo
+    git clone https://github.com/vinnie357/demo-f5-cis-gcp-gke-terraform-cloud.git
+    cp admin.auto.tfvars $repo/terraform/admin.auto.tfvars
+    cd $repo/terraform
+    terraform init
+    terraform plan
+    #
+    terraform apply --auto-approve
+    cd ../demo
+    . setup.sh
+    ```
+
+# Clean up/destroy
+
+    ```bash
+
+    cd demo
+    . cleanup.sh
+    cd ../terraform
+    terraform destroy --auto-approve
+
+    ```
