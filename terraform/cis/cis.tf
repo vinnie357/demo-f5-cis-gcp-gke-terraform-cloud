@@ -59,6 +59,7 @@ data template_file vm_onboard {
     DO2_Document        = data.template_file.vm02_do_json.rendered
     projectPrefix       = var.projectPrefix
     buildSuffix         = var.buildSuffix
+    podCidr             = var.podCidr
   }
 }
 #Declarative Onboarding template 01
@@ -79,6 +80,7 @@ data template_file vm01_do_json {
     admin_user      = var.adminAccountName
     admin_password  = var.adminPass
     bigipLicense1  = var.bigipLicense1
+    projectId       = var.projectId
   }
 }
 #Declarative Onboarding template 02
@@ -98,6 +100,7 @@ data template_file vm02_do_json {
     timezone        = var.timezone
     admin_user      = var.adminAccountName
     admin_password  = var.adminPass
+    projectId       = var.projectId
   }
 }
 
@@ -106,6 +109,7 @@ resource google_compute_instance vm_instance {
   count            = var.vm_count
   name             = "${var.projectPrefix}${var.name}-${count.index + 1}-instance${var.buildSuffix}"
   machine_type = var.bigipMachineType
+  can_ip_forward = true
   tags = ["allow-health-checks"]
   boot_disk {
     initialize_params {
@@ -146,6 +150,10 @@ resource google_compute_instance vm_instance {
     # A default network is created for all GCP projects
     network       = var.int_vpc.name
     subnetwork = var.int_subnet.name
+    alias_ip_range {
+        ip_cidr_range = var.bigipPodSubnet
+        subnetwork_range_name = var.podSubnet
+    }
     # network = "${google_compute_network.vpc_network.self_link}"
     # access_config {
     # }

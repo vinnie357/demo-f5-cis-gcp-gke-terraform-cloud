@@ -5,6 +5,7 @@ resource google_container_cluster primary {
   node_version = var.gkeVersion
   min_master_version = var.gkeVersion
   default_max_pods_per_node = "110"
+  #cluster_ipv4_cidr = var.podCidr
   ip_allocation_policy {}
 #   network_policy {
 #       enabled = true

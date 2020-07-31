@@ -16,4 +16,4 @@ spec:
     targetPort: 3000
   selector:
     app: owasp-juiceshop
-  type: NodePort
+  type: ClusterIP

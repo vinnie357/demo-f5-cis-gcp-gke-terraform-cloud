@@ -6,7 +6,7 @@ metadata:
     app: owasp-juiceshop
   name: owasp-juiceshop
 spec:
-  replicas: 2
+  replicas: 5
   selector:
     matchLabels:
       app: owasp-juiceshop

@@ -33,15 +33,15 @@ spec:
             - "--bigip-url=-bigip-mgmt-address-"
             - "--bigip-partition=k8s"
             - "--namespace=default"
-            - "--pool-member-type=nodeport"
-            # - "--pool-member-type=cluster"
+            #- "--pool-member-type=nodeport"
+            - "--pool-member-type=cluster"
             # - "--flannel-name=fl-vxlan"
             - "--log-level=DEBUG"
             - "--insecure=true"
             - "--manage-ingress=false"
             - "--manage-routes=false"
             - "--manage-configmaps=true"
-            - "--as3-validation=true"
+            - "--as3-validation=false"
             - "--agent=as3"
           command: 
             - /app/bin/k8s-bigip-ctlr
@@ -58,6 +58,6 @@ spec:
                 secretKeyRef: 
                   key: password
                   name: bigip-login
-          image: "f5networks/k8s-bigip-ctlr:1.14.0"
+          image: "f5networks/k8s-bigip-ctlr:2.1.0"
           name: f5-server
       serviceAccountName: k8s-bigip-ctlr

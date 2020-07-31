@@ -673,6 +673,7 @@ create net vlan internal interfaces add { 1.2 } mtu 1460;
 create net self internal-self address $INT3ADDRESS/32 vlan internal allow-service default;
 create net route int_gw_interface network $INT3GATEWAY/32 interface internal;
 create net route int_rt network $INT3NETWORK/$INT3MASK gw $INT3GATEWAY;
+create net route k8s_gw network ${podCidr}  gw $INT3GATEWAY;
 submit cli transaction" | tmsh -q
 # tmsh save /sys config
 # echo "done creating tmsh networking"

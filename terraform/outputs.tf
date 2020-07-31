@@ -6,7 +6,7 @@ output appAddress {
 }
 
 output adminPass {
-    value = random_password.password.result
+    value = var.adminPass != "" ? var.adminPass : random_password.password.result
 }
 
 output adminAccountName {

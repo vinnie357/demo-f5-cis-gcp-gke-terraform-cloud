@@ -36,7 +36,6 @@ resource google_compute_subnetwork vpc_network_int_sub {
   ip_cidr_range = "10.0.20.0/24"
   region        = var.gcpRegion
   network       = google_compute_network.vpc_network_int.self_link
-
 }
 resource google_compute_network vpc_network_ext {
   name                    = "${var.projectPrefix}terraform-network-ext-${random_pet.buildSuffix.id}"
@@ -125,18 +124,39 @@ resource google_compute_firewall allow-internal-egress {
 
   destination_ranges = ["10.0.20.0/24"]
 }
-resource google_compute_firewall allow-internal-cis {
-  name    = "${var.projectPrefix}allow-internal-cis-${random_pet.buildSuffix.id}"
+resource google_compute_firewall allow-internal-cis-egress {
+  name    = "${var.projectPrefix}allow-internal-cis-egress-${random_pet.buildSuffix.id}"
   network = google_compute_network.vpc_network_int.name
+  direction = "EGRESS"
   enable_logging = true
 
   allow {
     protocol = "tcp"
     ports    = ["443"]
   }
+  priority = "65533"
+
+  destination_ranges = ["10.0.20.0/24"]
+}
+resource google_compute_firewall allow-internal-cis {
+  name    = "${var.projectPrefix}allow-internal-cis-${random_pet.buildSuffix.id}"
+  network = google_compute_network.vpc_network_int.name
+  enable_logging = true
+
+  allow {
+    protocol = "icmp"
+  }
+  allow {
+    protocol = "tcp"
+    ports    = ["0-65535"]
+  }
+  allow {
+    protocol = "udp"
+    ports    = ["0-65535"]
+  }
   priority = "65532"
 
-  source_ranges = ["10.0.20.0/24"]
+  source_ranges = [module.k8s.podCidr]
 }
 # secret
 resource "random_password" "password" {
@@ -158,6 +178,7 @@ module k8s {
   int_vpc = google_compute_network.vpc_network_int
   int_subnet = google_compute_subnetwork.vpc_network_int_sub
 }
+
 # cis
 module cis {
   source   = "./cis"
@@ -175,9 +196,13 @@ module cis {
   int_subnet = google_compute_subnetwork.vpc_network_int_sub
   ext_subnet = google_compute_subnetwork.vpc_network_ext_sub
   projectPrefix = var.projectPrefix
+  projectId = var.gcpProjectId
   service_accounts = var.gcpServiceAccounts
   buildSuffix = "-${random_pet.buildSuffix.id}"
   vm_count = var.instanceCount
   customImage = var.customImage
   bigipLicense1 = var.bigipLicense1
+  podCidr = module.k8s.podCidr
+  podSubnet = module.k8s.podSubnet
+  bigipPodSubnet = cidrsubnet(module.k8s.podCidr,10,199)
 }

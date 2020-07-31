@@ -22,7 +22,9 @@ variable ext_subnet {
   
 }
 
-
+variable projectId {
+  description = "project where resources are created"
+}
 
 # device
 variable projectPrefix {
@@ -88,3 +90,16 @@ variable timezone { default = "UTC" }
 
 variable libs_dir { default = "/config/cloud/gcp/node_modules" }
 variable onboard_log { default = "/var/log/startup-script.log" }
+
+# k8s
+variable bigipPodSubnet {
+    description = "k8s pod cidr"
+    default = "10.8.100.0/24"
+}
+variable podCidr {
+    description = "k8s pod cidr"
+    default = ""
+}
+variable podSubnet {
+    description = " k8s overlay alias-ip subnet name"
+}

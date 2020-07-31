@@ -16,7 +16,7 @@ echo ""
 echo "get big-ip info"
 bigip1ExternalSelfIp=$(gcloud compute instances list --filter name:cis-demo-cis --format json | jq .[0] | jq .networkInterfaces | jq -r .[0].networkIP)
 bigip1ExternalNatIp=$(gcloud compute instances list --filter name:cis-demo-cis --format json | jq .[0] | jq .networkInterfaces | jq -r .[0].accessConfigs[0].natIP)
-bigip1MgmtIp=$(gcloud compute instances list --filter name:cis-demo-cis --format json | jq .[0] | jq .networkInterfaces | jq -r .[1].accessConfigs[0].natIP)
+bigip1MgmtIp=$(gcloud compute instances list --filter name:cis-demo-cis --format json | jq .[0] | jq .networkInterfaces | jq -r .[2].networkIP)
 ##
 # gke
 echo "get GKE cluster info"
@@ -47,7 +47,8 @@ kubectl apply -f app/juiceshop-service.yaml
 
 ## get svc port
 #kubectl get svc owasp-juiceshop -o json | jq .spec.ports[].nodePort
-juiceshopServicePort=$(kubectl get svc owasp-juiceshop -o json | jq -r .spec.ports[].nodePort)
+#juiceshopServicePort=$(kubectl get svc owasp-juiceshop -o json | jq -r .spec.ports[].nodePort)
+juiceshopServicePort=$(kubectl get svc owasp-juiceshop -o json | jq -r .spec.ports[].port)
 # ips
 # container connector
 echo "set bigip-mgmtip"
@@ -76,20 +77,21 @@ project=$(gcloud info --format json | jq -r .config.project)
 networkName=$(gcloud compute networks list --filter name:cis-demo-terraform-network-mgmt --format json | jq -r .[0].name)
 # set mgmt firewall rules for cis
 
-clusterNodeSrc=()
-for node in $clusterNodes
-do
-    clusterNodeSrc="${clusterNodeSrc} $node/32"
-done
-Nodelist=$( echo $clusterNodeSrc | sed 's/ /,/g' ) # stack filenames with commas
-echo $Nodelist 
+# clusterNodeSrc=()
+# for node in $clusterNodes
+# do
+#     clusterNodeSrc="${clusterNodeSrc} $node/32"
+# done
+# Nodelist=$( echo $clusterNodeSrc | sed 's/ /,/g' ) # stack filenames with commas
+# echo $Nodelist 
 
-gcloud compute --project=$project firewall-rules create cis-ingress --direction=INGRESS --priority=1000 --network=$networkName --action=ALLOW --rules=tcp:443 --source-ranges=$Nodelist
+#gcloud compute --project=$project firewall-rules create cis-ingress --direction=INGRESS --priority=1000 --network=$networkName --action=ALLOW --rules=tcp:443 --source-ranges=$Nodelist
 
 # finished
 echo "====done===="
 echo "check app at http://$bigip1ExternalNatIp"
 # watch logs
+sleep 30
 echo "type yes to tail the cis logs"
 read answer
 if [ $answer == "yes" ]; then

@@ -24,6 +24,6 @@ kubectl delete svc owasp-juiceshop
 kubectl delete deployment owasp-juiceshop
 kubectl delete configmaps f5-as3-declaration-juiceshop
 # delete fw rule
-gcloud compute --project=$project firewall-rules delete cis-ingress
+#gcloud compute --project=$project firewall-rules delete cis-ingress
 
 echo "====Done===="
