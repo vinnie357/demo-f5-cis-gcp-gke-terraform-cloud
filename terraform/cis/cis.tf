@@ -229,16 +229,16 @@ resource null_resource wait {
   provisioner "local-exec" {
     command = <<-EOF
         checks=0
-        while [[ "$checks" -lt 4 ]]; do
+        startTime=$(date +%s)
+        while [[ "$checks" -lt 2 ]]; do
             echo "waiting on: https://${google_compute_instance.vm_instance.0.network_interface.1.access_config.0.nat_ip}" 
-            curl -sk --retry 15 --retry-connrefused --retry-delay 10 https://${google_compute_instance.vm_instance.0.network_interface.1.access_config.0.nat_ip}
+            curl -sk --connect-timeout 1 --retry-connrefused --retry 60 --retry-delay 1 --retry-max-time 300 https://${google_compute_instance.vm_instance.0.network_interface.1.access_config.0.nat_ip}
         if [ $? == 0 ]; then
-            echo "mgmt ready"
+            echo "mgmt ready elapsed:"$(($(date +%s) - startTime))
             break
         fi
-        echo "mgmt not ready yet"
+        echo "mgmt not ready yet elapsed:"$(($(date +%s) - startTime))
         let checks=checks+1
-        sleep 10
         done
     EOF
     interpreter = ["bash", "-c"]

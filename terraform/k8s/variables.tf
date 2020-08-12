@@ -23,7 +23,7 @@ variable int_subnet {
 }
 
 variable gkeVersion {
-    default = "1.16.9-gke.6"
+    default = "1.16.13-gke.1"
 }
 
 # k8s
