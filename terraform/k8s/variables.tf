@@ -22,8 +22,10 @@ variable int_subnet {
   
 }
 
+#gcloud container get-server-config --region us-east1
 variable gkeVersion {
-    default = "1.16.13-gke.1"
+  description = "GKE release version"
+  default     = "1.16.15-gke.1600"
 }
 
 # k8s
